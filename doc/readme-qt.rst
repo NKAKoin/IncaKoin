@@ -16,6 +16,20 @@ distribution are installed, for Debian and Ubuntu these are:
         libboost-filesystem-dev libboost-program-options-dev libboost-thread-dev \
         libssl-dev libdb4.8++-dev
 
+for Ubuntu >= 12.04 (please read the 'Berkely DB version warning' below):
+
+::
+
+    apt-get install qt4-qmake libqt4-dev build-essential libboost-dev libboost-system-dev \
+        libboost-filesystem-dev libboost-program-options-dev libboost-thread-dev \
+        libssl-dev libdb++-dev libminiupnpc-dev
+
+For Qt 5 you need the following, otherwise you get an error with lrelease when running qmake:
+
+::
+
+    apt-get install qt5-qmake libqt5gui5 libqt5core5 libqt5dbus5 qttools5-dev-tools
+
 then execute the following:
 
 ::
@@ -27,7 +41,7 @@ Alternatively, install `Qt Creator`_ and open the `IncaKoin-qt.pro` file.
 
 An executable named `IncaKoin-qt` will be built.
 
-.. _`Qt Creator`: http://qt.nokia.com/downloads/
+.. _`Qt Creator`: http://qt-project.org/downloads/
 
 Windows
 --------
@@ -53,19 +67,32 @@ Mac OS X
 
 - Download and install the `Qt Mac OS X SDK`_. It is recommended to also install Apple's Xcode with UNIX tools.
 
-- Download and install `MacPorts`_.
+- Download and install either `MacPorts`_ or `HomeBrew`_.
 
-- Execute the following commands in a terminal to get the dependencies:
+- Execute the following commands in a terminal to get the dependencies using MacPorts:
 
 ::
 
 	sudo port selfupdate
 	sudo port install boost db48 miniupnpc
 
+- Execute the following commands in a terminal to get the dependencies using HomeBrew:
+
+::
+
+	brew update
+	brew install boost miniupnpc openssl berkeley-db4
+
+- If using HomeBrew,  edit `bitcoin-qt.pro` to account for library location differences. There's a diff in `contrib/homebrew/bitcoin-qt-pro.patch` that shows what you need to change, or you can just patch by doing
+
+        patch -p1 < contrib/homebrew/bitcoin.qt.pro.patch
+
 - Open the bitcoin-qt.pro file in Qt Creator and build as normal (cmd-B)
 
-.. _`Qt Mac OS X SDK`: http://qt.nokia.com/downloads/sdk-mac-os-cpp
+.. _`Qt Mac OS X SDK`: http://qt-project.org/downloads/
 .. _`MacPorts`: http://www.macports.org/install.php
+.. _`HomeBrew`: http://mxcl.github.io/homebrew/
+
 
 
 Build configuration options

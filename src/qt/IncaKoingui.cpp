@@ -3,6 +3,7 @@
  *
  * W.J. van der Laan 2011-2012
  * The IncaKoin Developers 2011-2012
+ * Updates for QT5 layer1gfx 2014
  */
 #include "IncaKoingui.h"
 #include "transactiontablemodel.h"
@@ -52,9 +53,15 @@
 #include <QDesktopServices>
 #include <QTimer>
 #include <QDragEnterEvent>
+#if QT_VERSION < 0x050000
 #include <QUrl>
-#include <QStyle>
+#include <QTextDocument>
+#else
+#include <QUrlQuery>
+#endif
 
+#include <QMimeData>
+#include <QStyle>
 #include <iostream>
 
 IncaKoinGUI::IncaKoinGUI(QWidget *parent):
@@ -820,8 +827,9 @@ void IncaKoinGUI::encryptWallet(bool status)
 
 void IncaKoinGUI::backupWallet()
 {
-    QString saveDir = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
-    QString filename = QFileDialog::getSaveFileName(this, tr("Backup Wallet"), saveDir, tr("Wallet Data (*.dat)"));
+    QString filename = GUIUtil::getSaveFileName(this,
+    tr("Backup Wallet"), QString(),
+    tr("Wallet Data (*.dat)"), NULL);
     if(!filename.isEmpty()) {
         if(!walletModel->backupWallet(filename)) {
             QMessageBox::warning(this, tr("Backup Failed"), tr("There was an error trying to save the wallet data to the new location."));
